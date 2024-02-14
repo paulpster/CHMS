@@ -8,11 +8,11 @@ CREATE TABLE chms.customer (
     customer_address text,
     contact_number  text,
     create_date timestamp DEFAULT NOW(),
-    PRIMARY KEY (customer_id),
-    AUTO_INCREMENT = 1000
+    PRIMARY KEY (customer_id)
 );
 -- to assist in look ups (when we have lots of customers)
 CREATE INDEX customer_customer_name ON chms.customer (customer_name(25));
+ALTER TABLE chms.customer AUTO_INCREMENT = 1000;
 
 -- I do not love all these similar names, worry about confusing tables and columns
 CREATE TABLE chms.vehicle_type (
@@ -30,10 +30,10 @@ CREATE TABLE chms.vehicle (
     vehicle_type varchar(15),
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (vehicle_id),
-    AUTO_INCREMENT = 1000,
     FOREIGN KEY (vehicle_type) REFERENCES chms.vehicle_type (vehicle_type)
 );
 CREATE INDEX vehicle_vehicle_name ON chms.vehicle (vehicle_name(25));
+ALTER TABLE chms.vehicle AUTO_INCREMENT = 1000;
 
 CREATE TABLE chms.booking (
     booking_id int NOT NULL AUTO_INCREMENT,
@@ -43,13 +43,13 @@ CREATE TABLE chms.booking (
     date_in     timestamp,       -- date the customer returns the car
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (booking_id),
-    AUTO_INCREMENT = 1000,
     FOREIGN KEY (customer_id) REFERENCES chms.customer (customer_id),
     FOREIGN KEY (vehicle_id) REFERENCES chms.vehicle (vehicle_id),
     CONSTRAINT seven_day_rental CHECK (DATEDIFF(date_in, date_out) < 7),
     CONSTRAINT seven_day_advance CHECK (DATEDIFF(date_out, create_date) < 7)
 );
 CREATE INDEX booking_date_out ON chms.booking (date_out);
+ALTER TABLE chms.booking AUTO_INCREMENT = 1000;
 
 /*
     An invoice is to be auto generated upon 'booking'. That probably mean upon the insert or a booking record.
@@ -68,17 +68,17 @@ CREATE TABLE chms.payment (
     FOREIGN KEY (booking_id) REFERENCES chms.booking (booking_id)
 );
 
-CREATE TABLE invoice (
+CREATE TABLE chms.invoice (
     invoice_id  int NOT NULL AUTO_INCREMENT,
     booking_id  int NOT NULL,
     invoice_amount DECIMAL(10, 2),
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (invoice_id),
-    AUTO_INCREMENT = 1000,
     FOREIGN KEY (booking_id) REFERENCES chms.booking (booking_id)
 );
+ALTER TABLE chms.invoice AUTO_INCREMENT = 1000;
 
-CREATE TABLE letter (
+CREATE TABLE chms.letter (
     booking_id  int NOT NULL,
     letter_content text,
     create_date timestamp DEFAULT NOW(),
