@@ -3,12 +3,13 @@ CREATE DATABASE chms;
 
 /* just a few of may fields that could be here */
 CREATE TABLE chms.customer (
-    customer_id int,
-    customer_name text,
+    customer_id int NOT NULL AUTO_INCREMENT,
+    customer_name text NOT NULL,
     customer_address text,
     contact_number  text,
     create_date timestamp DEFAULT NOW(),
-    PRIMARY KEY (customer_id)
+    PRIMARY KEY (customer_id),
+    AUTO_INCREMENT = 1000
 );
 -- to assist in look ups (when we have lots of customers)
 CREATE INDEX customer_customer_name ON chms.customer (customer_name(25));
@@ -23,24 +24,26 @@ CREATE TABLE chms.vehicle_type (
 INSERT INTO chms.vehicle_type VALUES ('Small Car', 4), ('Family Car', 7), ('Van', 0);
 
 CREATE TABLE chms.vehicle (
-    vehicle_id  int,        
+    vehicle_id  int NOT NULL AUTO_INCREMENT,
     vin text,
-    vehicle_name text,
+    vehicle_name text NOT NULL,
     vehicle_type varchar(15),
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (vehicle_id),
+    AUTO_INCREMENT = 1000,
     FOREIGN KEY (vehicle_type) REFERENCES chms.vehicle_type (vehicle_type)
 );
 CREATE INDEX vehicle_vehicle_name ON chms.vehicle (vehicle_name(25));
 
 CREATE TABLE chms.booking (
-    booking_id int,
-    customer_id int,
-    vehicle_id int,
+    booking_id int NOT NULL AUTO_INCREMENT,
+    customer_id int NOT NULL,
+    vehicle_id int NOT NULL,
     date_out    timestamp,       -- date the customer picks up the car
     date_in     timestamp,       -- date the customer returns the car
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (booking_id),
+    AUTO_INCREMENT = 1000,
     FOREIGN KEY (customer_id) REFERENCES chms.customer (customer_id),
     FOREIGN KEY (vehicle_id) REFERENCES chms.vehicle (vehicle_id),
     CONSTRAINT seven_day_rental CHECK (DATEDIFF(date_in, date_out) < 7),
@@ -48,10 +51,16 @@ CREATE TABLE chms.booking (
 );
 CREATE INDEX booking_date_out ON chms.booking (date_out);
 
+/*
+    An invoice is to be auto generated upon 'booking'. That probably mean upon the insert or a booking record.
+    A trigger can be used to do this, but that is meaningless with out some thing on the front end to notice.
+    A stored proc that puts away the booking can to this as well.
+*/
+
 -- Not entirely sure about these and what they need to hold based on the requirements
 -- I do know that I should record that these things were done (recd payment, create invoice, sent letter).
 CREATE TABLE chms.payment (
-    booking_id  int,
+    booking_id  int NOT NULL,
     payment_amount  DECIMAL(10, 2),
     payment_details  text,
     create_date timestamp DEFAULT NOW(),
@@ -60,16 +69,17 @@ CREATE TABLE chms.payment (
 );
 
 CREATE TABLE invoice (
-    invoice_id  int,
-    booking_id  int,
+    invoice_id  int NOT NULL AUTO_INCREMENT,
+    booking_id  int NOT NULL,
     invoice_amount DECIMAL(10, 2),
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (invoice_id),
+    AUTO_INCREMENT = 1000,
     FOREIGN KEY (booking_id) REFERENCES chms.booking (booking_id)
 );
 
 CREATE TABLE letter (
-    booking_id  int,
+    booking_id  int NOT NULL,
     letter_content text,
     create_date timestamp DEFAULT NOW(),
     PRIMARY KEY (booking_id),
