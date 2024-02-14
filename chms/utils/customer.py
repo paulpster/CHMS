@@ -1,7 +1,8 @@
 def createCustomer(DB, data):
     # this is too basic, I do not have a grip in the new CID tso that I can return the new record
-    sql = "INSERT INTO chsm.customer (customer_name, customer_address, contact_number) VALUES (%s, %s, %s);"
+    sql = "INSERT INTO chms.customer (customer_name, customer_address, contact_number) VALUES (%s, %s, %s);"
 
+    # yes this bit following is duplicated, need to decide what to do about it (create a validator or sorts?)
     if "name" not in data:
         # this is really not any good
         return
@@ -13,7 +14,7 @@ def createCustomer(DB, data):
     if "num" in data:
         num = data["num"]
 
-    DB.excute(
+    DB.store(
         sql,
         (
             data["name"],
@@ -21,7 +22,9 @@ def createCustomer(DB, data):
             num,
         ),
     )
-    return getCustomer(sql, 0)
+    rs = DB.excute("SELECT LAST_INSERT_ID();", ())
+
+    return getCustomer(sql, rs[0][0])
 
 
 def deleteCustomer(DB, cid):
