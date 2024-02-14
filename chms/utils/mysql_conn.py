@@ -1,4 +1,7 @@
-import mysqldb
+import MySQLdb
+
+# TODO
+# yes better, more informative exception handling would be fabulous.
 
 
 class MySQLDB:
@@ -6,7 +9,7 @@ class MySQLDB:
 
     def __init__(self, database=None, user=None, password=None, host=None):
         try:
-            self._conn = mysqldb.connect(
+            self._conn = MySQLdb.connect(
                 database=database, user=user, password=password, host=host
             )
         except Exception as e:
@@ -15,8 +18,9 @@ class MySQLDB:
         return
 
     def query(self, sql, args):
+        rs = None
         try:
-            oCur = self._conn.cursor(mysqldb.DictCursor)
+            oCur = self._conn.cursor(MySQLdb.DictCursor)
             oCur.excute(sql, args)
             rs = oCur.fetchall()
         except Exception as e:
@@ -25,15 +29,16 @@ class MySQLDB:
 
     def store(self, sql, args):
         try:
-            oCur = self._conn.cursor(mysqldb.DictCursor)
+            oCur = self._conn.cursor(MySQLdb.DictCursor)
             oCur.excute(sql, args)
         except Exception as e:
             pass
         return
 
     def callProc(self, sql, args):
+        rs = None
         try:
-            oCur = self._conn.cursor(mysqldb.DictCursor)
+            oCur = self._conn.cursor(MySQLdb.DictCursor)
             oCur.excute(sql, args)
             rs = oCur.fetchall()
         except Exception as e:
