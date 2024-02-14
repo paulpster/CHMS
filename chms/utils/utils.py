@@ -5,7 +5,12 @@ from . import commons
 def before_req(request, session, g):
     if "DB" not in g:
         print("get DB connection")
-        g.DB = mysql_conn.mysql(None, commons.DB_DB)
+        g.DB = mysql_conn.mysql(
+            database=commons.DB_DB,
+            user=commons.DB_USER,
+            password=commons.DB_PWD,
+            host=commons.DB_HOST,
+        )
         if g.DB is None:
             print("before_req: Null DB connection")
 
