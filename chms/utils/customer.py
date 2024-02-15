@@ -22,9 +22,9 @@ def createCustomer(DB, data):
             num,
         ),
     )
-    rs = DB.excute("SELECT LAST_INSERT_ID();", ())
+    rs = DB.query("SELECT LAST_INSERT_ID() AS last;", ())
 
-    return getCustomer(sql, rs[0][0])
+    return getCustomer(sql, rs[0]["last"])
 
 
 def deleteCustomer(DB, cid):
