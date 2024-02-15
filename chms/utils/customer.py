@@ -24,18 +24,14 @@ def createCustomer(DB, data):
     )
     rs = DB.query("SELECT LAST_INSERT_ID() AS last;", ())
 
-    return getCustomer(sql, rs[0]["last"])
+    return getCustomer(DB, rs[0]["last"])
 
 
 def deleteCustomer(DB, cid):
     # Thre are FK issues here, either need to remove the associated bookings, payments, invoices, letters
     #       OR the FK enforcment needs to occur in a proc that puts in the booking
     sql = "DELETE FROM chms.customer WHERE customer_id = %s;"
-    DB.store(
-        sql(
-            cid,
-        )
-    )
+    DB.store(sql, (cid,))
     return None
 
 
@@ -55,19 +51,20 @@ def updateCustomer(DB, cid, data):
         num = data["num"]
 
     DB.store(
-        sql(
+        sql,
+        (
             data["name"],
             addr,
             num,
             cid,
-        )
+        ),
     )
     return getCustomer(DB, cid)
 
 
 def getCustomer(DB, cid):
     sql = "SELECT * FROM chms.customer WHERE customer_id = %s;"
-    rs = DB.excute(sql, (cid,))
+    rs = DB.query(sql, (cid,))
 
     if rs:
         return {
