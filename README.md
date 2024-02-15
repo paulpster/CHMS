@@ -9,6 +9,17 @@ It has been a challenge:
 - I have not messed with MySQL in any meaningful way in a decade.
 - Apparently I have not messed with GitHub in a while either...
 
+This has been an interesting challenge.
+There is soooo much more that could be done with this:
+
+- more REST stuff
+- I need better testing
+- the whole front end of course.
+- filling out letters, invoices, payments....
+- set up dev ops things for building the DB, createing test data, and testing
+
+I am sure I will think of more things, but I am about out of time and hope i did not forget anything significant.
+
 The more I look a the Requirements and Deliverables, the more I see this more of a SQL challenge than a Python one.
 
 # ERD
