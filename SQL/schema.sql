@@ -35,6 +35,8 @@ CREATE TABLE chms.vehicle (
 CREATE INDEX vehicle_vehicle_name ON chms.vehicle (vehicle_name(25));
 ALTER TABLE chms.vehicle AUTO_INCREMENT = 1000;
 
+/* the customer_id foreign key should not be there for this exercise, but should be there in real life */
+/* customer_id foreign key will be OK if there are no bookings to disrupt things */
 CREATE TABLE chms.booking (
     booking_id int NOT NULL AUTO_INCREMENT,
     customer_id int NOT NULL,
