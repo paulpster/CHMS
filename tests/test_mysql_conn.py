@@ -4,15 +4,19 @@ from chms.utils.mysql_conn import MySQLConn
 from chms.utils.commons import DB_DB, DB_HOST, DB_PWD, DB_USER
 
 
+def get_db():
+    return MySQLConn(database=DB_DB, user=DB_USER, password=DB_PWD, host=DB_HOST)
+
+
 def test_make_connection():
-    DB = MySQLConn(database=DB_DB, user=DB_USER, password=DB_PWD, host=DB_HOST)
+    DB = get_db()
 
     assert DB is not None
     return
 
 
 def test_store():
-    DB = MySQLConn(database=DB_DB, user=DB_USER, password=DB_PWD, host=DB_HOST)
+    DB = get_db()
 
     assert DB is not None
 
@@ -24,7 +28,7 @@ def test_store():
 
 
 def test_execute():
-    DB = MySQLConn(database=DB_DB, user=DB_USER, password=DB_PWD, host=DB_HOST)
+    DB = get_db()
 
     assert DB is not None
 
@@ -34,7 +38,7 @@ def test_execute():
 
 
 def test_callproc():
-    DB = MySQLConn(database=DB_DB, user=DB_USER, password=DB_PWD, host=DB_HOST)
+    DB = get_db()
 
     assert DB is not None
 
