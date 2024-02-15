@@ -29,10 +29,10 @@ def post_req(req):
 @bp.route("/<int:cid>", methods=(["GET", "POST", "PUT", "DELETE"]))
 def customerCRUD(cid):
     if request.method == "PUT":
-        data = request.data()
+        data = json.loads(request.data)
         ret = utils.customer.updateCustomer(g.DB, cid, data)
     elif request.method == "POST":
-        data = request.data()
+        data = json.loads(request.data)
         ret = utils.customer.createCustomer(g.DB, data)
     elif request.method == "DELETE":
         ret = utils.customer.deleteCustomer(g.DB, cid)
