@@ -19,6 +19,10 @@ class MySQLConn:
             print(f"MySQLConn::__init__ connection error {e}")
         return
 
+    def close(self):
+        self._conn.close()
+        return
+
     def query(self, sql, args):
         rs = None
         try:
