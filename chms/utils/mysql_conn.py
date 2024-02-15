@@ -4,10 +4,12 @@ import MySQLdb
 # yes better, more informative exception handling would be fabulous.
 
 
-class MySQLDB:
+class MySQLConn:
     _conn = None
 
-    def __init__(self, database=None, user=None, password=None, host=None):
+    def __init__(
+        self, database=None, user=None, password=None, host=None, autocommit=True
+    ):
         try:
             self._conn = MySQLdb.connect(
                 database=database, user=user, password=password, host=host
@@ -20,8 +22,8 @@ class MySQLDB:
     def query(self, sql, args):
         rs = None
         try:
-            oCur = self._conn.cursor(MySQLdb.DictCursor)
-            oCur.excute(sql, args)
+            oCur = self._conn.cursor(MySQLdb.cursors.DictCursor)
+            oCur.execute(sql, args)
             rs = oCur.fetchall()
         except Exception as e:
             pass
@@ -29,8 +31,8 @@ class MySQLDB:
 
     def store(self, sql, args):
         try:
-            oCur = self._conn.cursor(MySQLdb.DictCursor)
-            oCur.excute(sql, args)
+            oCur = self._conn.cursor(MySQLdb.cursors.DictCursor)
+            oCur.execute(sql, args)
         except Exception as e:
             pass
         return
@@ -38,8 +40,8 @@ class MySQLDB:
     def callProc(self, sql, args):
         rs = None
         try:
-            oCur = self._conn.cursor(MySQLdb.DictCursor)
-            oCur.excute(sql, args)
+            oCur = self._conn.cursor(MySQLdb.cursors.DictCursor)
+            oCur.callProc(sql, args)
             rs = oCur.fetchall()
         except Exception as e:
             pass
