@@ -14,8 +14,12 @@ def before_req(request, session, g):
         if g.DB is None:
             print("before_req: Null DB connection")
 
-    return
+    return g.DB
 
 
 def teardown_req(request, session, g):
+    DB = g.pop("DB", None)
+
+    if DB is not None:
+        DB.close()
     return
