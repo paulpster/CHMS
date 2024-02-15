@@ -16,7 +16,7 @@ class MySQLConn:
             )
         except Exception as e:
             # cough up a hair ball, something went wrong
-            pass
+            print(f"MySQLConn::__init__ connection error {e}")
         return
 
     def query(self, sql, args):
@@ -26,7 +26,7 @@ class MySQLConn:
             oCur.execute(sql, args)
             rs = oCur.fetchall()
         except Exception as e:
-            pass
+            print(f"MySQLConn::query error: {e}")
         return rs
 
     def store(self, sql, args):
@@ -34,15 +34,15 @@ class MySQLConn:
             oCur = self._conn.cursor(MySQLdb.cursors.DictCursor)
             oCur.execute(sql, args)
         except Exception as e:
-            pass
+            print(f"MySQLConn::execute error: {e}")
         return
 
     def callProc(self, sql, args):
         rs = None
         try:
             oCur = self._conn.cursor(MySQLdb.cursors.DictCursor)
-            oCur.callProc(sql, args)
+            oCur.callproc(sql, args)
             rs = oCur.fetchall()
         except Exception as e:
-            pass
+            print(f"MySQLConn::callProc error {e}")
         return rs
